@@ -4,8 +4,8 @@
 #Due Date: May 10, 2017
 ###############################################################################################################################
 from time import *
-#import pygame
-#import RPi.GPIO as GPIO
+import pygame
+import RPi.GPIO as GPIO
 from Tkinter import *
 
 class Game(Canvas):
@@ -14,32 +14,31 @@ class Game(Canvas):
                 Canvas.__init__(self,master)
                 master.columnconfigure(0, weight = 1)
                 master.rowconfigure(0, weight = 1)
-
+                
         def gui(self):
                 self.grid()
                 
-                img = PhotoImage( file = "Neil.gif" )
-                pic = Label(self.master, image = img)
-                pic.image = img
-                pic.grid(row = 0, column = 0, sticky = N+S+E+W)
+                img = PhotoImage( file = "neil.gif" )
+                self.pic = Label(self.master, image = img, height = 40, width = 40)
+                self.pic.image = img
+                self.pic.grid(row = 0, column = 0, sticky = N+S+E+W)
 
-                self.entry = Entry(self.master)
-                self.entry.width = 200
-                self.entry.grid(row = 3, column = 0, columnspan = 2)
+                self.ansA = Radiobutton(self.master, text = atext, value = 1, variable = ansvar, width = 10)
+                self.ansA.grid(row = 1, column = 0)
+                self.ansB = Radiobutton(self.master, text = btext, value = 2, variable = ansvar, width = 10)
+                self.ansB.grid(row = 2, column = 0)
+                self.ansC = Radiobutton(self.master, text = ctext, value = 3, variable = ansvar, width = 10)
+                self.ansC.grid(row = 1, column = 1)
+                self.ansD = Radiobutton(self.master, text = dtext, value = 4, variable = ansvar, width = 10)
+                self.ansD.grid(row = 2, column = 1)
 
-                self.timer = Label(self.master, text = "Time: ", state = DISABLED)
+                self.timer = Label(self.master, text = "Time: ", state = DISABLED, height = 5, width = 25)
                 self.timer.grid(row = 0, column = 2, columnspan = 2, sticky = W)
 
-                self.qNumber = Label(self.master, text = "Question #", state = DISABLED)
+                self.qNumber = Label(self.master, text = "Question #", state = DISABLED, height = 5, width = 25)
                 self.qNumber.grid(row = 1, column = 2, columnspan = 2, sticky = N+W)
 
-                self.nextWord = Button(self.master, text = "Next Word")
-                self.nextWord.grid(row = 2, column = 2)
-
-                self.replayWord = Button(self.master, text = "Replay Word")
-                self.replayWord.grid(row = 2, column = 3)
-
-                self.submit = Button(self.master, text = "Submit Answer")
+                self.submit = Button(self.master, text = testvar, height = 2, width = 10, command = self.checkAns)
                 self.submit.grid(row = 3, column = 2, columnspan = 2)
 
         def play(self):
@@ -54,11 +53,34 @@ class Game(Canvas):
         def timerstuff(self):
                 pass
         
-        
+        def checkAns(self):
+            if(ansvar.get() == 1):
+                testvar = "ans 1"
+            elif(ansvar.get() == 2):
+                testvar = "Ans 2"
+            elif(ansvar.get() == 3):
+                testvar = "Ans 3"
+            elif(ansvar.get() == 4):
+                testvar = "Ans 4"
+            print testvar
 
+atext = "placeholder a"
+btext = "placeholder b"
+ctext = "placeholder c"
+dtext = "placeholder d"
+testvar = ""
 window = Tk()
+ansvar = IntVar()
+
+questdict = {1:3, 2:2, 3:4, 4:1}
+question1 = []
+question2 = []
+question3 = []
+question4 = []
+
 window.title("Space with Tyson")
-window.geometry("400x300")
+window.geometry("500x400")
 f = Game(window)
 f.play()
 window.mainloop()
+
