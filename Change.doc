@@ -3,3 +3,6 @@ Green LED = 17
 RGB = NOT WIRED YET
 Button closest to LED = 6
 Button closest to edge = 26
+RBG RED = 22
+RGB BLUE = 4
+RGB GREEN = 21
