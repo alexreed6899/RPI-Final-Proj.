@@ -8,6 +8,7 @@ import pygame
 import RPi.GPIO as GPIO
 from Tkinter import *
 
+
 class Game(Canvas):
         def __init__(self, master):
                 self.master = master
