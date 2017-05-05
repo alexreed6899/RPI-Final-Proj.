@@ -49,6 +49,8 @@ class Game(Canvas):
                 self.ctext = StringVar()
                 self.dtext = StringVar()
                 self.setText()
+                self.score = 0
+                self.penalty = 0
 
         def gui(self):
                 self.grid()
@@ -167,6 +169,7 @@ class Game(Canvas):
                                 self.gui()
                         else:
                                 print "Wrong Answer!"
+                                self.penalty += 30
 
                 elif (self.current_question == 1):
                         if (var == 3):
@@ -178,6 +181,7 @@ class Game(Canvas):
                                 self.gui()
                         else:
                                 print "Wrong Answer!"
+                                self.penalty += 30
 
                 elif (self.current_question == 2):
                         if (var == 2):
@@ -189,6 +193,7 @@ class Game(Canvas):
                                 self.gui()
                         else:
                                 print "Wrong Answer!"
+                                self.penalty += 30
 
                 elif (self.current_question == 3):
                         if (var == 4):
@@ -198,14 +203,16 @@ class Game(Canvas):
                                 self.answering = False
                                 self.setText()
                                 self.gui()
-                                time = timer['text']
-                                s = score(time, penalty)
+                                s = score(self.score, self.penalty)
+                                print s
                                 #showScore(s)
                         else:
                                 print "Wrong Answer!"
+                                self.penalty += 30
 
         def updateTime(self, a):
                 self.time.set("Time: " + str(a) + " sec")
+                self.score += 1
 
 def score(t, penalty):
         playing = False
