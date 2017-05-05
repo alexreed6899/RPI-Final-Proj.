@@ -44,6 +44,11 @@ class Game(Canvas):
                 self.current_word = -1
                 self.current_led = RED
                 self.answering = False
+                self.atext = StringVar()
+                self.btext = StringVar()
+                self.ctext = StringVar()
+                self.dtext = StringVar()
+                self.setText()
 
         def gui(self):
                 self.grid()
@@ -53,13 +58,13 @@ class Game(Canvas):
                 pic.image = img
                 pic.grid(row = 0, column = 0, sticky = N+S+E+W)
 
-                self.ansA = Radiobutton(self.master, text = atext, value = 1, variable = ansvar, width = 10)
+                self.ansA = Radiobutton(self.master, textvariable = self.atext, value = 1, variable = ansvar, width = 10)
                 self.ansA.grid(row = 1, column = 0)
-                self.ansB = Radiobutton(self.master, text = btext, value = 2, variable = ansvar, width = 10)
+                self.ansB = Radiobutton(self.master, textvariable = self.btext, value = 2, variable = ansvar, width = 10)
                 self.ansB.grid(row = 2, column = 0)
-                self.ansC = Radiobutton(self.master, text = ctext, value = 3, variable = ansvar, width = 10)
+                self.ansC = Radiobutton(self.master, textvariable = self.ctext, value = 3, variable = ansvar, width = 10)
                 self.ansC.grid(row = 1, column = 1)
-                self.ansD = Radiobutton(self.master, text = dtext, value = 4, variable = ansvar, width = 10)
+                self.ansD = Radiobutton(self.master, textvariable = self.dtext, value = 4, variable = ansvar, width = 10)
                 self.ansD.grid(row = 2, column = 1)
 
                 self.timer = Label(self.master, textvariable = self.time, state = DISABLED)
@@ -131,25 +136,25 @@ class Game(Canvas):
 
         def setText(self):
                 if (self.current_question == 0):
-                        atext = "Sojourner"
-                        btext = "Curiosity"
-                        ctext = "MER"
-                        dtext = "Prop-M"
+                        self.atext.set("Sojourner")
+                        self.btext.set("Curiosity")
+                        self.ctext.set("MER")
+                        self.dtext.set("Prop-M")
                 elif (self.current_question == 1):
-                        atext = "20 minutes"
-                        btext = "1 minute"
-                        ctext = "8 minutes"
-                        dtext = "40 minutes"
+                        self.atext.set("20 minutes")
+                        self.btext.set("1 minute")
+                        self.ctext.set("8 minutes")
+                        self.dtext.set("40 minutes")
                 elif (self.current_question == 2):
-                        atext = "10,000 light years"
-                        btext = "27,000 light years"
-                        ctext = "15,000 light years"
-                        dtext = "45,000 light years"
+                        self.atext.set("10,000 light years")
+                        self.btext.set("27,000 light years")
+                        self.ctext.set("15,000 light years")
+                        self.dtext.set("45,000 light years")
                 elif (self.current_question == 3):
-                        atext = "Carbon"
-                        btext = "Water"
-                        ctext = "Iron"
-                        dtext = "Hydrogen"
+                        self.atext.set("Carbon")
+                        self.btext.set("Water")
+                        self.ctext.set("Iron")
+                        self.dtext.set("Hydrogen")
 
         def checkAns(self, var):
                 if (self.current_question == 0):
@@ -201,7 +206,6 @@ class Game(Canvas):
 
         def updateTime(self, a):
                 self.time.set("Time: " + str(a) + " sec")
-                print self.time
 
 def score(t, penalty):
         playing = False
@@ -226,10 +230,6 @@ NEXT_WORD = 26
 UNIT = .2
 
 playing = True
-atext = "aaa"
-btext = "bbb"
-ctext = "ccc" 
-dtext = "ddd"
 penalty = 0
 time = threading.Thread(target = timer)
 time.deamon = True
