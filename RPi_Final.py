@@ -4,8 +4,8 @@
 #Due Date: May 10, 2017
 ###############################################################################################################################
 from time import *
-#import pygame
-#import RPi.GPIO as GPIO
+import pygame
+import RPi.GPIO as GPIO
 from Tkinter import *
 import threading
 
@@ -113,14 +113,14 @@ class Game(Canvas):
                 if (len(words)-1) < self.current_word:
                         print 'This is the end of the question its time to answer.'
                         return
-                #GPIO.output(current_led, True)
+                GPIO.output(current_led, True)
                 for n in words[self.current_word]:
                         if n != '/':
                                 self.blink(n, self.current_led)
                         else:
                                 sleep(UNIT*3)
                                 print 'end of character'
-                #GPIO.output(current_led, False)
+                GPIO.output(current_led, False)
                 if (len(words)-1) == self.current_word:
                         self.answering = True
                         
@@ -129,10 +129,10 @@ class Game(Canvas):
         def blink(self, length, current_led):
                 if length in self.morse:
                         print 'light {}, {}'.format(length, current_led)
-                        #GPIO.output(current_led, True)
+                        GPIO.output(current_led, True)
                         sleep(self.morse[length])
-                        #GPIO.output(current_led, False)
-                        #sleep(UNIT)
+                        GPIO.output(current_led, False)
+                        sleep(UNIT)
                 else:
                         print 'blink.error({}, {})'.format(length, current_led)
 
@@ -242,13 +242,13 @@ time = threading.Thread(target = timer)
 time.deamon = True
 
 # GPIO stuffs
-#GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM)
 
-#GPIO.setup(red, GPIO.OUT)
-#GPIO.setup(green, GPIO.OUT)
+GPIO.setup(red, GPIO.OUT)
+GPIO.setup(green, GPIO.OUT)
 
-#GPIO.setup(repeat, GPIO.IN, GPIO.PUD_DOWN)
-#GPIO.setup(next_word, GPIO.IN, GPIO.PUD_DOWN) 
+GPIO.setup(repeat, GPIO.IN, GPIO.PUD_DOWN)
+GPIO.setup(next_word, GPIO.IN, GPIO.PUD_DOWN) 
 
 window = Tk()
 ansvar = IntVar()
