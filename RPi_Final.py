@@ -75,11 +75,11 @@ class Game(Canvas):
                 self.qNumber = Label(self.master, text = "Question # {}".format(self.current_question + 1), state = DISABLED)
                 self.qNumber.grid(row = 1, column = 2, columnspan = 2, sticky = N+W)
 
-                self.nextWord = Button(self.master, text = "Next Word", command = self.buttonOne)
-                self.nextWord.grid(row = 2, column = 2)
+              #  self.nextWord = Button(self.master, text = "Next Word", command = self.buttonOne)
+              #  self.nextWord.grid(row = 2, column = 2)
 
-                self.replayWord = Button(self.master, text = "Replay Word", command = self.buttonTwo)
-                self.replayWord.grid(row = 2, column = 3)
+              #  self.replayWord = Button(self.master, text = "Replay Word", command = self.buttonTwo)
+              #  self.replayWord.grid(row = 2, column = 3)
 
                 self.submit = Button(self.master, text = "Submit Answer", command = self.buttonThree)
                 self.submit.grid(row = 3, column = 2, columnspan = 2)
@@ -228,6 +228,16 @@ def timer():
                 t += 1
                 f.updateTime(t)
                 sleep(1)
+                
+def buttonReader():
+        while (playing == True):
+                input_state = GPIO.input(REPEAT)
+                if (input_state == False):
+                        buttonTwo()
+                input_state = GPIO.input(NEXT_WORD)
+                if (input_state == False):
+                        buttonOne()
+        
 
 
 # Constants // assuming the green led is for every other word
@@ -244,15 +254,20 @@ playing = True
 penalty = 0
 time = threading.Thread(target = timer)
 time.deamon = True
+buttonRead = threading.Thread(target = buttonReader)
+buttonRead.deamon = True
 
 # GPIO stuffs
 GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(red, GPIO.OUT)
-GPIO.setup(green, GPIO.OUT)
+GPIO.setup(RED, GPIO.OUT)
+GPIO.setup(GREEN, GPIO.OUT)
+GPIO.setup(RGB_RED, GPIO.OUT)
+GPIO.setup(RGB_GREEN, GPIO.OUT)
+GPIO.setup(RGB_BLUE, GPIO.OUT)
 
-GPIO.setup(repeat, GPIO.IN, GPIO.PUD_DOWN)
-GPIO.setup(next_word, GPIO.IN, GPIO.PUD_DOWN) 
+GPIO.setup(REPEAT, GPIO.IN, GPIO.PUD_DOWN)
+GPIO.setup(NEXT_WORD, GPIO.IN, GPIO.PUD_DOWN) 
 
 window = Tk()
 ansvar = IntVar()
@@ -261,4 +276,5 @@ window.geometry("600x500")
 f = Game(window)
 f.play()
 time.start()
+buttonRead.start()
 window.mainloop()
