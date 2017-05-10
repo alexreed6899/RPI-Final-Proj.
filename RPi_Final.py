@@ -23,8 +23,7 @@ class Game(Canvas):
                 master.columnconfigure(0, weight = 1)
                 master.rowconfigure(0, weight = 1)
                 
-                # List of questions in form of 1s and 0s
-                # 0 = dash, 1 = dot
+                # List of questions in form of dots and dashes
                 self.questions = ['.--/..../../-.-./.... .-./---/...-/./.-. .--/.-/... -/..../. ..-./../.-./.../- -/--- ./-..-/.--./.-../---/.-./. --/.-/.-./...', # Question 1, [Which rover was the first to explore Mars? - Sojourner]
                              '..../---/.-- --/..-/-.-./.... -/../--/. -../---/./... .- .../..-/-. .-./.-/-.-- -/.-/-.-/. -/--- -/.-./.-/...-/./.-.. -/--- ./.-/.-./-/....', # Question 2, [How much time does a sun ray take to travel to Earth? - 8 minutes]
                              '--/../.-../-.-/-.-- .--/.-/-.-- -.../.-../.-/-.-./-.- ..../---/.-../. -../../.../-/.-/-./-.-./. ../-. .-../../--./..../- -.--/./.-/.-./...', # Question 3, [Milky Way black hole distance in light years? - 27,000 light years]
@@ -230,13 +229,14 @@ def timer():
                 sleep(1)
                 
 def buttonReader():
-        while (playing == True):
+        while (True):
                 input_state = GPIO.input(REPEAT)
-                if (input_state == False):
-                        buttonTwo()
+                if (input_state == 1):
+                        f.buttonTwo()
                 input_state = GPIO.input(NEXT_WORD)
-                if (input_state == False):
-                        buttonOne()
+                if (input_state == 1):
+                        f.buttonOne()
+                sleep(.1)
         
 
 
