@@ -30,7 +30,7 @@ class Game(Canvas):
                              '--/../.-../-.-/-.-- .--/.-/-.-- -.../.-../.-/-.-./-.- ..../---/.-../. -../../.../-/.-/-./-.-./. ../-. .-../../--./..../- -.--/./.-/.-./...', # Question 3, [Milky Way black hole distance in light years? - 27,000 light years]
                              '.--/..../.-/- ../... -/..../. .../..-/-. --/---/.../-/.-../-.-- --/.-/-../. ---/..-.'] # Question 4, [What is the sun mostly made of? - Hydrogen]
 
-                self.questions = ['.','-','.','-']
+                #self.questions = ['.','-','.','-']
                 
                 # Dict for the times of each dot and dash
                 self.morse = {'-':UNIT*3, '.':UNIT}
@@ -109,18 +109,22 @@ class Game(Canvas):
 
         
         def runQuestion(self):
+                GPIO.output(RGB_BLUE, False)
                 words = self.questions[self.current_question].split(' ')
                 if (len(words)-1) < self.current_word:
+                        GPIO.output(RGB_BLUE, True)
                         print 'This is the end of the question its time to answer.'
                         return
-                GPIO.output(current_led, True)
+                GPIO.output(RGB_RED, False)
+                GPIO.output(RGB_GREEN, True)
                 for n in words[self.current_word]:
                         if n != '/':
                                 self.blink(n, self.current_led)
                         else:
                                 sleep(UNIT*3)
                                 print 'end of character'
-                GPIO.output(current_led, False)
+                GPIO.output(RGB_GREEN, False)
+                GPIO.output(RGB_RED, True)
                 if (len(words)-1) == self.current_word:
                         self.answering = True
                         
