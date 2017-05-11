@@ -16,6 +16,33 @@ import threading
 
 # Delete last word = eight dots
 
+class Help(Canvas):
+        def __init__(self, master):
+                self.master = master
+                Canvas.__init__(self, master)
+                master.columnconfigure(0, weight = 1)
+                master.rowconfigure(0, weight = 1)
+                
+                self.helpText = "alskdjfhlaskdf"
+                
+        def gui(self):
+                self.helpLabel = Label(self.master, text = self.helpText)
+                self.helpLabel.grid (row = 0, column = 0)
+                
+class ScoreScreen(Canvas):
+        def __init__(self, master, a):
+                self.master = master
+                Canvas.__init__(self, master)
+                master.columnconfigure(0, weight = 1)
+                master.rowconfigure(0, weight = 1)
+                
+                self.scoreText = "You scored: {}".format(a)
+        
+        def gui(self):
+                self.scoreLabel = Label(self.master, text = self.scoreText)
+                self.scoreLabel.grid(row = 0, column = 0)
+                
+
 class Game(Canvas):
         def __init__(self, master):
                 self.master = master
@@ -67,12 +94,15 @@ class Game(Canvas):
                 self.ansC.grid(row = 1, column = 1)
                 self.ansD = Radiobutton(self.master, textvariable = self.dtext, value = 4, variable = ansvar, width = 10)
                 self.ansD.grid(row = 2, column = 1)
+                
+                self.helpButton = Button(self.master, text = "help", command = self.helpWindow)
+                self.helpButton.grid(row = 0, column = 2, sticky = N+S+E+W)
 
                 self.timer = Label(self.master, textvariable = self.time, state = DISABLED)
-                self.timer.grid(row = 0, column = 2, columnspan = 2, sticky = W)
+                self.timer.grid(row = 1, column = 2, columnspan = 2, sticky = W)
 
                 self.qNumber = Label(self.master, text = "Question # {}".format(self.current_question + 1), state = DISABLED)
-                self.qNumber.grid(row = 1, column = 2, columnspan = 2, sticky = N+W)
+                self.qNumber.grid(row = 2, column = 2, columnspan = 2, sticky = N+W)
 
               #  self.nextWord = Button(self.master, text = "Next Word", command = self.buttonOne)
               #  self.nextWord.grid(row = 2, column = 2)
@@ -105,7 +135,13 @@ class Game(Canvas):
                         return
                 self.checkAns(ansvar.get())
                 
-
+        def helpWindow(self):
+                helpW = Tk()
+                helpW.title("Space with Tyson HELP")
+                helpW.geometry("300x400")
+                a = Help(helpW)
+                hwlpW.mainloop()
+                
         
         def runQuestion(self):
                 GPIO.output(RGB_BLUE, False)
@@ -208,7 +244,7 @@ class Game(Canvas):
                                 self.gui()
                                 s = score(self.score, self.penalty)
                                 print s
-                                #showScore(s)
+                                showScore(s)
                         else:
                                 print "Wrong Answer!"
                                 self.penalty += 30
@@ -238,7 +274,13 @@ def buttonReader():
                         f.buttonOne()
                 sleep(.1)
         
-
+def showScore(c):
+        scoreWindow = Tk()
+        scoreWindow.title("Space with Tyson SCORE")
+        scoreWindow.geometry("300x500")
+        
+        s = ScoreScreen(scoreWindow, c)
+        scoreWindow.mainloop()
 
 # Constants // assuming the green led is for every other word
 RED = 12
