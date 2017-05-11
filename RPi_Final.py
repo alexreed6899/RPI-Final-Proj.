@@ -26,7 +26,7 @@ class Help(Canvas):
                 self.helpText = "alskdjfhlaskdf"
                 
         def gui(self):
-                self.helpLabel = Label(self.master, text = self.helpText)
+                self.helpLabel = Label(self.master, textvariable = self.helpText)
                 self.helpLabel.grid (row = 0, column = 0)
                 
 class ScoreScreen(Canvas):
@@ -84,7 +84,7 @@ class Game(Canvas):
                 img = PhotoImage( file = "Neil.gif" )
                 pic = Label(self.master, image = img)
                 pic.image = img
-                pic.grid(row = 0, column = 0, sticky = N+S+E+W)
+                pic.grid(row = 0, column = 0, sticky = E+W)
 
                 self.ansA = Radiobutton(self.master, textvariable = self.atext, value = 1, variable = ansvar, width = 10)
                 self.ansA.grid(row = 1, column = 0)
@@ -95,23 +95,17 @@ class Game(Canvas):
                 self.ansD = Radiobutton(self.master, textvariable = self.dtext, value = 4, variable = ansvar, width = 10)
                 self.ansD.grid(row = 2, column = 1)
                 
-                self.helpButton = Button(self.master, text = "help", command = self.helpWindow)
-                self.helpButton.grid(row = 0, column = 2, sticky = N+S+E+W)
+                self.helpButton = Button(self.master, text = "help", command = self.helpWindow, width = 25)
+                self.helpButton.grid(row = 0, column = 2, rowspan = 2, sticky = E+W)
 
                 self.timer = Label(self.master, textvariable = self.time, state = DISABLED)
-                self.timer.grid(row = 1, column = 2, columnspan = 2, sticky = W)
+                self.timer.grid(row = 2, column = 2, columnspan = 2, sticky = W)
 
                 self.qNumber = Label(self.master, text = "Question # {}".format(self.current_question + 1), state = DISABLED)
-                self.qNumber.grid(row = 2, column = 2, columnspan = 2, sticky = N+W)
-
-              #  self.nextWord = Button(self.master, text = "Next Word", command = self.buttonOne)
-              #  self.nextWord.grid(row = 2, column = 2)
-
-              #  self.replayWord = Button(self.master, text = "Replay Word", command = self.buttonTwo)
-              #  self.replayWord.grid(row = 2, column = 3)
+                self.qNumber.grid(row = 3, column = 2, columnspan = 2, sticky = N+W)
 
                 self.submit = Button(self.master, text = "Submit Answer", command = self.buttonThree)
-                self.submit.grid(row = 3, column = 2, columnspan = 2)
+                self.submit.grid(row = 4, column = 2, columnspan = 2)
 
         def play(self):
                 self.setText()
