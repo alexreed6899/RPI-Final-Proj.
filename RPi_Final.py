@@ -23,9 +23,10 @@ class Help(Canvas):
                 master.columnconfigure(0, weight = 1)
                 master.rowconfigure(0, weight = 1)
                 
-                self.helpText = "alskdjfhlaskdf"
+                self.helpText = ""
                 
         def gui(self):
+                self.grid()
                 self.helpLabel = Label(self.master, textvariable = self.helpText)
                 self.helpLabel.grid (row = 0, column = 0)
                 
@@ -39,6 +40,8 @@ class ScoreScreen(Canvas):
                 self.scoreText = "You scored: {}".format(a)
         
         def gui(self):
+                self.grid()
+                
                 self.scoreLabel = Label(self.master, text = self.scoreText)
                 self.scoreLabel.grid(row = 0, column = 0)
                 
@@ -134,7 +137,7 @@ class Game(Canvas):
                 helpW.title("Space with Tyson HELP")
                 helpW.geometry("300x400")
                 a = Help(helpW)
-                hwlpW.mainloop()
+                helpW.mainloop()
                 
         
         def runQuestion(self):
