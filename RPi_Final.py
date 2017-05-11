@@ -16,36 +16,6 @@ import threading
 
 # Delete last word = eight dots
 
-class Help(Canvas):
-        def __init__(self, master):
-                self.master = master
-                Canvas.__init__(self, master)
-                master.columnconfigure(0, weight = 1)
-                master.rowconfigure(0, weight = 1)
-                
-                self.helpText = ""
-                
-        def gui(self):
-                self.grid()
-                self.helpLabel = Label(self.master, textvariable = self.helpText)
-                self.helpLabel.grid (row = 0, column = 0)
-                
-class ScoreScreen(Canvas):
-        def __init__(self, master, a):
-                self.master = master
-                Canvas.__init__(self, master)
-                master.columnconfigure(0, weight = 1)
-                master.rowconfigure(0, weight = 1)
-                
-                self.scoreText = "You scored: {}".format(a)
-        
-        def gui(self):
-                self.grid()
-                
-                self.scoreLabel = Label(self.master, text = self.scoreText)
-                self.scoreLabel.grid(row = 0, column = 0)
-                
-
 class Game(Canvas):
         def __init__(self, master):
                 self.master = master
@@ -98,7 +68,7 @@ class Game(Canvas):
                 self.ansD = Radiobutton(self.master, textvariable = self.dtext, value = 4, variable = ansvar, width = 10)
                 self.ansD.grid(row = 2, column = 1)
                 
-                self.helpButton = Button(self.master, text = "help", command = self.helpWindow, width = 25)
+                self.helpButton = Button(self.master, text = "help", command = clickAbout, width = 25)
                 self.helpButton.grid(row = 0, column = 2, rowspan = 2, sticky = E+W)
 
                 self.timer = Label(self.master, textvariable = self.time, state = DISABLED)
@@ -122,6 +92,7 @@ class Game(Canvas):
                 self.runQuestion()
 
         def buttonTwo(self):
+                self.current_word -= 1
                 print 'Current word: {}'.format(self.current_word)
                 print 'Current question: {}'.format(self.current_question)
                 self.runQuestion()
@@ -130,7 +101,11 @@ class Game(Canvas):
                 if not self.answering:
                         print "The question hasen't been fully asked yet."
                         return
-                self.checkAns(ansvar.get())
+                if (self.current_question < 3):
+                        self.checkAns(ansvar.get())
+                else:
+                        self.checkAns(ansvar.get())
+                        showScore(score(self.score, self.penalty))
                 
         def helpWindow(self):
                 helpW = Tk()
@@ -239,9 +214,6 @@ class Game(Canvas):
                                 self.answering = False
                                 self.setText()
                                 self.gui()
-                                s = score(self.score, self.penalty)
-                                print s
-                                showScore(s)
                         else:
                                 print "Wrong Answer!"
                                 self.penalty += 30
@@ -265,19 +237,23 @@ def buttonReader():
         while (True):
                 input_state = GPIO.input(REPEAT)
                 if (input_state == 1):
+                        print "button two"
                         f.buttonTwo()
                 input_state = GPIO.input(NEXT_WORD)
                 if (input_state == 1):
                         f.buttonOne()
                 sleep(.1)
-        
+
+def clickAbout():
+    toplevel = Toplevel()
+    label1 = Label(toplevel, text="The button farthest from the LEDs will play the next word. \n The button closest to the LEDs will play the previous word. \n The LEDs will blink out a question in morse code. \n Translate and select an answer at the bottom of the GUI. \n Click submit to submit your answer. \n If you submit an incorrect answer, 30 seconds will be added to your final score. \n If you submit a correct answer, the game will progress to the next question.", height=0, width=100)
+    label1.pack()
+    
 def showScore(c):
-        scoreWindow = Tk()
-        scoreWindow.title("Space with Tyson SCORE")
-        scoreWindow.geometry("300x500")
-        
-        s = ScoreScreen(scoreWindow, c)
-        scoreWindow.mainloop()
+        toplevel = Toplevel()
+        toplevel.geometry("200x200")
+        label1 = Label(toplevel, text = "Your final score is: {}".format(c))
+        label1.pack()
 
 # Constants // assuming the green led is for every other word
 RED = 12
